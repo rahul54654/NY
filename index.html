@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanguard EcoPest Systems | Heavenly Eco-Defense Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#060907',
+                            card: '#0C120E',
+                            cardGlow: 'rgba(16, 185, 129, 0.08)',
+                            green: '#00FF87',
+                            emerald: '#10B981',
+                            deepGreen: '#059669',
+                            celestial: '#A7F3D0',
+                            accent: '#064E3B',
+                            textMuted: '#9CA3AF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif']
+                    },
+                    keyframes: {
+                        heavenlyFloat: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-16px) rotate(1.5deg)' },
+                        },
+                        etherealGlow: {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1) rotate(0deg)' },
+                            '50%': { opacity: '0.7', transform: 'scale(1.1) rotate(180deg)' }
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(0,255,135,0.2)' },
+                            '50%': { boxShadow: '0 0 35px rgba(0,255,135,0.5)' }
+                        },
+                        soundWave: {
+                            '0%, 100%': { height: '6px' },
+                            '50%': { height: '26px' }
+                        }
+                    },
+                    animation: {
+                        float: 'heavenlyFloat 6s ease-in-out infinite',
+                        etherealGlow: 'etherealGlow 12s linear infinite',
+                        shimmer: 'shimmer 3s infinite linear',
+                        pulseGlow: 'pulseGlow 3s ease-in-out infinite',
+                        soundWave: 'soundWave 1.2s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #060907;
+            color: #E5E7EB;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* CUSTOM MAGNETIC CURSOR */
+        @media (pointer: fine) {
+            body { cursor: none; }
+        }
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00FF87;
+            box-shadow: 0 0 12px #00FF87, 0 0 20px #00FF87;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(0, 255, 135, 0.4);
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.12s cubic-bezier(0.23, 1, 0.32, 1), width 0.2s, height 0.2s, border-color 0.2s;
+        }
+
+        /* HEAVENLY CANVAS BACKGROUND */
+        #heavenly-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* GLASSMORPHISM NAV & CARDS */
+        .glass-nav {
+            background: rgba(6, 9, 7, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 135, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .glass-card {
+            background: rgba(12, 18, 14, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 135, 0.18);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 135, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 255, 135, 0.18), 0 0 10px rgba(0, 255, 135, 0.1);
+        }
+
+        /* IMAGE OVERLAY CARD WITH 3D HOVER TILT */
+        .image-overlay-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(0, 255, 135, 0.2);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .image-overlay-card:hover {
+            border-color: rgba(0, 255, 135, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 255, 135, 0.25);
+        }
+        .image-overlay-card img {
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .image-overlay-card:hover img {
+            transform: scale(1.08);
+        }
+        .image-overlay-card .overlay-content {
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(6,9,7,0.96) 82%);
+        }
+
+        /* SHIMMER TEXT EFFECT */
+        .shimmer-text {
+            background: linear-gradient(90deg, #ffffff 0%, #00FF87 50%, #ffffff 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 4s infinite linear;
+        }
+
+        /* REEVEAL ANIMATION CLASSES */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(35px) scale(0.97);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-node.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* RIPPLE EFFECT */
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #060907; }
+        ::-webkit-scrollbar-thumb { background: #10B981; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00FF87; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-green selection:text-black relative">
+
+    <!-- DYNAMIC HEAVENLY CANVAS PARTICLES BACKGROUND -->
+    <canvas id="heavenly-canvas"></canvas>
+
+    <!-- CUSTOM MAGNETIC CURSOR DOT & RING -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <header class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- FRESH LOGO WITH AMBIENT NEON GLOW -->
+                <a href="#home" onclick="navigateTo('home')" class="flex items-center space-x-3 group cursor-pointer">
+                    <div class="relative w-11 h-11 bg-gradient-to-br from-brand-green via-brand-emerald to-black rounded-xl flex items-center justify-center shadow-lg shadow-brand-green/30 group-hover:scale-110 transition-transform duration-500">
+                        <!-- Custom SVG Shield + Leaf + Pulse Logo -->
+                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M12 8a4 4 0 0 1 4 4c0 2.5-3 5-4 6-1-1-4-3.5-4-6a4 4 0 0 1 4-4z" fill="#00FF87"/>
+                        </svg>
+                        <div class="absolute -inset-1 bg-brand-green rounded-xl blur-md opacity-30 group-hover:opacity-70 transition duration-500"></div>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black tracking-wider text-white uppercase block leading-none font-serif">VANGUARD</span>
+                        <span class="text-[10px] font-bold text-brand-green tracking-widest uppercase flex items-center space-x-1 mt-1">
+                            <i class="fa-solid fa-sparkles text-[8px] animate-spin"></i>
+                            <span>EcoPest • Heavenly Care</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 text-brand-green bg-brand-green/10 border border-brand-green/30">Home</button>
+                    <button onclick="navigateTo('services')" id="nav-services" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-brand-green hover:bg-brand-green/5 border border-transparent">Services</button>
+                    <button onclick="navigateTo('blog')" id="nav-blog" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-brand-green hover:bg-brand-green/5 border border-transparent">Blog & Guide</button>
+                    <button onclick="navigateTo('about')" id="nav-about" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-brand-green hover:bg-brand-green/5 border border-transparent">About Us</button>
+                    <button onclick="navigateTo('contact')" id="nav-contact" class="nav-link px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-brand-green hover:bg-brand-green/5 border border-transparent">Contact Us</button>
+                </nav>
+
+                <!-- AUDIO CONTROLLER & CTA BUTTON -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    
+                    <!-- HEAVENLY AMBIENT SYNTH TOGGLE -->
+                    <button id="audio-toggle-btn" onclick="toggleHeavenlyAudio()" class="px-3.5 py-2 rounded-full bg-brand-card/90 border border-brand-green/30 hover:border-brand-green text-gray-300 hover:text-brand-green text-xs font-medium flex items-center space-x-2 transition-all duration-300 shadow-lg cursor-pointer">
+                        <i id="audio-icon" class="fa-solid fa-music text-brand-green"></i>
+                        <span id="audio-status-text">Heavenly Sound: OFF</span>
+                        <div id="audio-visualizer" class="hidden items-end space-x-0.5 h-3 ml-1">
+                            <span class="w-0.5 bg-brand-green rounded-full animate-soundWave" style="animation-delay: 0.1s"></span>
+                            <span class="w-0.5 bg-brand-green rounded-full animate-soundWave" style="animation-delay: 0.3s"></span>
+                            <span class="w-0.5 bg-brand-green rounded-full animate-soundWave" style="animation-delay: 0.2s"></span>
+                        </div>
+                    </button>
+
+                    <button onclick="navigateTo('contact')" class="ripple-btn px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green via-brand-emerald to-brand-deepGreen text-black font-extrabold text-sm hover:shadow-lg hover:shadow-brand-green/40 hover:scale-105 transition-all duration-300 flex items-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Book Eco Inspection</span>
+                    </button>
+                </div>
+
+                <!-- MOBILE MENU TOGGLE -->
+                <div class="md:hidden flex items-center space-x-3">
+                    <button onclick="toggleHeavenlyAudio()" class="p-2 text-brand-green text-lg">
+                        <i id="mobile-audio-icon" class="fa-solid fa-music"></i>
+                    </button>
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-brand-green p-2 text-2xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card/95 backdrop-blur-xl border-b border-brand-green/20 px-4 pt-2 pb-6 space-y-2">
+            <button onclick="navigateTo('home'); toggleMobileMenu();" class="block w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white hover:bg-brand-green/10 hover:text-brand-green">Home</button>
+            <button onclick="navigateTo('services'); toggleMobileMenu();" class="block w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white hover:bg-brand-green/10 hover:text-brand-green">Services</button>
+            <button onclick="navigateTo('blog'); toggleMobileMenu();" class="block w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white hover:bg-brand-green/10 hover:text-brand-green">Blog & Guide</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu();" class="block w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white hover:bg-brand-green/10 hover:text-brand-green">About Us</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu();" class="block w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white hover:bg-brand-green/10 hover:text-brand-green">Contact Us</button>
+        </div>
+    </header>
+
+    <main class="pt-20 flex-grow relative z-10">
+
+        <!-- 1. HOME PAGE SECTION -->
+        <section id="page-home" class="page-section">
+            
+            <!-- HERO BANNER WITH AMBIENT LIGHT LEAKS & LEVITATING BADGE -->
+            <div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden border-b border-brand-green/15">
+                <div class="absolute inset-0 z-0">
+                    <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=1920&q=80" alt="Heavenly Eco Pest Prevention" class="w-full h-full object-cover filter brightness-[0.38] scale-105 transition-transform duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/85 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
+                    
+                    <!-- Ambient Ethereal Glow Spheres -->
+                    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-green/15 rounded-full blur-3xl animate-etherealGlow pointer-events-none"></div>
+                    <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-brand-emerald/20 rounded-full blur-3xl animate-etherealGlow pointer-events-none" style="animation-delay: -6s;"></div>
+                </div>
+
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+                    <div class="max-w-3xl space-y-6">
+                        
+                        <!-- LEVITATING BADGE -->
+                        <div class="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-brand-green/15 border border-brand-green/40 text-brand-green text-xs font-bold tracking-wider uppercase backdrop-blur-md shadow-lg shadow-brand-green/10 animate-float">
+                            <i class="fa-solid fa-wand-magic-sparkles text-brand-green"></i>
+                            <span>Pure Botanical & Celestial Safeguard</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight">
+                            Restoring Harmony Through <span class="shimmer-text font-serif">Heavenly Eco Defense</span>
+                        </h1>
+
+                        <p class="text-lg sm:text-xl text-gray-300 font-light leading-relaxed">
+                            Experience divine peace in your home. Protecting properties with entomological precision, non-toxic botanical formulas, and guaranteed structural exclusion barriers.
+                        </p>
+
+                        <div class="pt-6 flex flex-col sm:flex-row gap-4">
+                            <button onclick="navigateTo('contact')" class="ripple-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-green via-brand-emerald to-brand-deepGreen text-black font-black text-base hover:shadow-2xl hover:shadow-brand-green/40 hover:scale-105 transition-all duration-300 text-center flex items-center justify-center space-x-3 cursor-pointer">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Request Free Eco Audit</span>
+                            </button>
+                            <button onclick="navigateTo('services')" class="px-8 py-4 rounded-2xl bg-brand-card/80 border border-brand-green/30 text-white font-bold text-base hover:bg-brand-green/20 hover:border-brand-green transition-all duration-300 text-center backdrop-blur-md cursor-pointer">
+                                Explore Solutions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRUST METRICS WITH ANIMATED COUNT-UP -->
+            <div class="py-12 bg-brand-card/60 border-b border-brand-green/15 backdrop-blur-md">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div class="p-6 rounded-2xl glass-card reveal-node">
+                            <div class="text-3xl sm:text-5xl font-black text-brand-green mb-1 font-serif counter" data-target="100">0</div>
+                            <div class="text-xs sm:text-sm text-gray-300 font-medium">% Botanical & Safe</div>
+                        </div>
+                        <div class="p-6 rounded-2xl glass-card reveal-node">
+                            <div class="text-3xl sm:text-5xl font-black text-brand-green mb-1 font-serif">24/7</div>
+                            <div class="text-xs sm:text-sm text-gray-300 font-medium">Rapid Response Care</div>
+                        </div>
+                        <div class="p-6 rounded-2xl glass-card reveal-node">
+                            <div class="text-3xl sm:text-5xl font-black text-brand-green mb-1 font-serif counter" data-target="15">0</div>
+                            <div class="text-xs sm:text-sm text-gray-300 font-medium">+ Years Serving NY</div>
+                        </div>
+                        <div class="p-6 rounded-2xl glass-card reveal-node">
+                            <div class="text-3xl sm:text-5xl font-black text-brand-green mb-1 font-serif counter" data-target="5000">0</div>
+                            <div class="text-xs sm:text-sm text-gray-300 font-medium">+ Peaceful Sanctuaries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURED HIGHLIGHT CARDS WITH 3D TILT EFFECT & OVERLAID TEXT -->
+            <div class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 reveal-node">
+                    <div class="inline-flex items-center space-x-2 text-brand-green text-xs font-black uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Targeted Eco Systems</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-bold text-white font-serif">Our Signature Treatments</h2>
+                    <div class="w-20 h-1 bg-gradient-to-r from-brand-green to-brand-celestial mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- TILT CARD 1 -->
+                    <div class="image-overlay-card h-96 group shadow-2xl reveal-node tilt-card">
+                        <img src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80" alt="Residential Sanctuary Defense" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex flex-col justify-end text-left">
+                            <div class="w-12 h-12 bg-brand-green/20 border border-brand-green rounded-xl flex items-center justify-center mb-3 text-brand-green text-xl backdrop-blur-md">
+                                <i class="fa-solid fa-house-chimney-window"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-serif">Residential Sanctuary Shield</h3>
+                            <p class="text-gray-300 text-sm mb-4">Complete perimeter defense against ants, spiders, and pests using child-and-pet-safe natural minerals.</p>
+                            <button onclick="navigateTo('services')" class="text-brand-green font-bold text-sm flex items-center space-x-2 group-hover:translate-x-2 transition-transform cursor-pointer">
+                                <span>Explore Defense</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TILT CARD 2 -->
+                    <div class="image-overlay-card h-96 group shadow-2xl reveal-node tilt-card">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Commercial Protocol" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex flex-col justify-end text-left">
+                            <div class="w-12 h-12 bg-brand-green/20 border border-brand-green rounded-xl flex items-center justify-center mb-3 text-brand-green text-xl backdrop-blur-md">
+                                <i class="fa-solid fa-building-circle-check"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-serif">Commercial Facility Matrix</h3>
+                            <p class="text-gray-300 text-sm mb-4">Discrete, health-compliant containment strategies tailored for dining, hospitality, and office complexes.</p>
+                            <button onclick="navigateTo('services')" class="text-brand-green font-bold text-sm flex items-center space-x-2 group-hover:translate-x-2 transition-transform cursor-pointer">
+                                <span>Explore Matrix</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TILT CARD 3 -->
+                    <div class="image-overlay-card h-96 group shadow-2xl reveal-node tilt-card">
+                        <img src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=800&q=80" alt="Termite Barrier" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex flex-col justify-end text-left">
+                            <div class="w-12 h-12 bg-brand-green/20 border border-brand-green rounded-xl flex items-center justify-center mb-3 text-brand-green text-xl backdrop-blur-md">
+                                <i class="fa-solid fa-shield-cat"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2 font-serif">Subterranean Termite Barrier</h3>
+                            <p class="text-gray-300 text-sm mb-4">Non-disruptive soil matrices and continuous thermal monitoring that eradicate wood-destroying colonies.</p>
+                            <button onclick="navigateTo('services')" class="text-brand-green font-bold text-sm flex items-center space-x-2 group-hover:translate-x-2 transition-transform cursor-pointer">
+                                <span>Explore Barriers</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- HEAVENLY CLIENT VOICE SHOWCASE -->
+            <div class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 reveal-node">
+                    <div class="inline-flex items-center space-x-2 text-brand-green text-xs font-black uppercase tracking-widest mb-2">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span>Auditory & Verified Reviews</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-bold text-white font-serif">Heavenly Voices of Our Clients</h2>
+                    <p class="text-gray-400 text-sm mt-2">Listen to local property owners share their stories of restored sanctuary.</p>
+                    <div class="w-20 h-1 bg-gradient-to-r from-brand-green to-brand-celestial mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="p-6 rounded-2xl glass-card relative group hover:border-brand-green transition-all shadow-xl reveal-node">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold text-base">
+                                    EB
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-bold text-sm">Elena B.</h3>
+                                    <span class="text-xs text-gray-400">Patchogue Homeowner</span>
+                                </div>
+                            </div>
+                            <button onclick="playVoiceQuote('Elena from Patchogue says: Vanguard transformed our home. Their eco-friendly service brought complete peace of mind without any chemical smell!')" class="w-10 h-10 rounded-full bg-brand-green text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-brand-green/30 cursor-pointer">
+                                <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                            </button>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-4">
+                            "Vanguard transformed our home! Their botanical treatments brought complete peace without any harsh lingering odors."
+                        </p>
+                        <div class="flex items-center text-brand-green text-xs space-x-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            <span class="text-gray-400 ml-2 font-mono">Verified Audio Review</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl glass-card relative group hover:border-brand-green transition-all shadow-xl reveal-node">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold text-base">
+                                    MR
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-bold text-sm">Marcus R.</h3>
+                                    <span class="text-xs text-gray-400">Restaurant Manager</span>
+                                </div>
+                            </div>
+                            <button onclick="playVoiceQuote('Marcus from South Shore dining says: Prompt, professional, and completely effective. Their rodent exclusion system is pure perfection!')" class="w-10 h-10 rounded-full bg-brand-green text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-brand-green/30 cursor-pointer">
+                                <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                            </button>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-4">
+                            "Prompt, professional, and completely effective. Their copper-mesh exclusion barrier is pure engineering perfection."
+                        </p>
+                        <div class="flex items-center text-brand-green text-xs space-x-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            <span class="text-gray-400 ml-2 font-mono">Verified Audio Review</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl glass-card relative group hover:border-brand-green transition-all shadow-xl reveal-node">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold text-base">
+                                    SK
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-bold text-sm">Sophia K.</h3>
+                                    <span class="text-xs text-gray-400">Long Island Resident</span>
+                                </div>
+                            </div>
+                            <button onclick="playVoiceQuote('Sophia says: The technicians were remarkably thorough. Mosquitoes are completely gone from our garden!')" class="w-10 h-10 rounded-full bg-brand-green text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-brand-green/30 cursor-pointer">
+                                <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                            </button>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-4">
+                            "The technicians were remarkably thorough. Mosquitoes are completely gone from our backyard and patio space!"
+                        </p>
+                        <div class="flex items-center text-brand-green text-xs space-x-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            <span class="text-gray-400 ml-2 font-mono">Verified Audio Review</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SERVICES PAGE SECTION -->
+        <section id="page-services" class="page-section hidden">
+            <div class="relative py-20 bg-brand-card/80 border-b border-brand-green/20 backdrop-blur-md">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl sm:text-6xl font-black text-white mb-4 font-serif">Bio-Rational Pest Solutions</h1>
+                    <p class="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg">Targeted, eco-friendly extermination and structural containment designed with nature in mind.</p>
+                </div>
+            </div>
+
+            <div class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                
+                <!-- SERVICE 1 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-3xl p-6 sm:p-8 reveal-node">
+                    <div class="image-overlay-card h-80 lg:h-96 w-full tilt-card">
+                        <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=1000&q=80" alt="Termite Barrier System" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex items-end">
+                            <span class="text-white font-bold text-lg bg-brand-dark/90 px-4 py-2 rounded-xl border border-brand-green/30 backdrop-blur-md">Termite Barrier Systems</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="text-brand-green text-xs font-black uppercase tracking-widest">Structural Protection</div>
+                        <h2 class="text-3xl font-bold text-white font-serif">Subterranean Termite Barrier</h2>
+                        <p class="text-gray-300 leading-relaxed">
+                            Protect foundation timbers from hidden wood-destroying colonies. Our eco-certified termiticide barrier system halts worker termites without contaminating nearby groundwater or plant beds.
+                        </p>
+                        <ul class="space-y-2 text-gray-300 text-sm">
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Non-invasive thermal imaging structural scan</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Safe around children, pets, and garden foliage</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Renewable multi-year structural warranty</span></li>
+                        </ul>
+                        <button onclick="navigateTo('contact')" class="ripple-btn px-6 py-3 rounded-xl bg-brand-green text-black font-extrabold text-sm hover:bg-brand-celestial transition-all mt-2 cursor-pointer">Book Inspection</button>
+                    </div>
+                </div>
+
+                <!-- SERVICE 2 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center glass-card rounded-3xl p-6 sm:p-8 reveal-node">
+                    <div class="order-2 lg:order-1 space-y-4">
+                        <div class="text-brand-green text-xs font-black uppercase tracking-widest">Mammal Containment</div>
+                        <h2 class="text-3xl font-bold text-white font-serif">Rodent Exclusion & Sanitation</h2>
+                        <p class="text-gray-300 leading-relaxed">
+                            Mice and rats compromise wiring and home hygiene. We perform thorough copper-mesh entry exclusion, structural sealing, and anti-microbial bio-cleansing.
+                        </p>
+                        <ul class="space-y-2 text-gray-300 text-sm">
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Complete gap sealing with stainless steel mesh</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Tamper-resistant exterior baiting networks</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-brand-green"></i><span>Attic bio-sanitation and insulation care</span></li>
+                        </ul>
+                        <button onclick="navigateTo('contact')" class="ripple-btn px-6 py-3 rounded-xl bg-brand-green text-black font-extrabold text-sm hover:bg-brand-celestial transition-all mt-2 cursor-pointer">Request Exclusion</button>
+                    </div>
+                    <div class="order-1 lg:order-2 image-overlay-card h-80 lg:h-96 w-full tilt-card">
+                        <img src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=1000&q=80" alt="Rodent Exclusion Seal" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex items-end">
+                            <span class="text-white font-bold text-lg bg-brand-dark/90 px-4 py-2 rounded-xl border border-brand-green/30 backdrop-blur-md">Rodent Exclusion Seal</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- STREAMING_CHUNK:Constructing Structured Blog Article (>1200 words) with Internal Linking... -->
+        <!-- 3. BLOG PAGE SECTION WITH 1200+ WORDS STRUCTURED ARTICLE & FAQ ACCORDION -->
+        <section id="page-blog" class="page-section hidden">
+            <div class="relative py-16 bg-brand-card/80 border-b border-brand-green/20 backdrop-blur-md">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div class="inline-block px-3 py-1 rounded-full bg-brand-green/15 text-brand-green text-xs font-bold uppercase tracking-wider mb-3">Knowledge Base & Local Insight</div>
+                    <h1 class="text-3xl sm:text-5xl font-black text-white mb-4 font-serif">Comprehensive Pest Prevention Guide</h1>
+                    <p class="text-gray-300 text-sm sm:text-base">Scientific methodology for maintaining pest-free residential and commercial sanctuaries.</p>
+                </div>
+            </div>
+
+            <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-gray-300 leading-relaxed space-y-8">
+                
+                <div class="space-y-4 border-b border-brand-green/20 pb-8 reveal-node">
+                    <span class="text-xs font-bold text-brand-green uppercase tracking-wider">Coastal Property Report</span>
+                    
+                    <!-- H1 TITLE -->
+                    <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight font-serif">The Comprehensive Guide to Eco-Friendly Pest Mitigation in Long Island Coastal Communities</h1>
+                    
+                    <div class="flex items-center space-x-4 text-xs text-gray-400 pt-2">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> Quarterly Publication</span>
+                        <span>•</span>
+                        <span><i class="fa-regular fa-clock mr-1"></i> 10 Min Read</span>
+                        <span>•</span>
+                        <span><i class="fa-regular fa-user mr-1"></i> Vanguard Technical Entomology Board</span>
+                    </div>
+                </div>
+
+                <div class="image-overlay-card h-80 sm:h-96 w-full my-8 reveal-node">
+                    <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=1200&q=80" alt="Eco-Friendly Pest Control Guide" class="w-full h-full object-cover">
+                    <div class="overlay-content absolute inset-0 p-6 flex flex-col justify-end">
+                        <p class="text-white font-bold text-lg">Proactive Eco-Friendly Defense Strategies for Year-Round Structural Care</p>
+                    </div>
+                </div>
+
+                <!-- H2 SECTION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-4 border-b border-brand-green/20 pb-2 font-serif reveal-node">Understanding Regional Coastal Pest Ecosystems</h2>
+                
+                <p class="reveal-node">
+                    Living along coastal environments presents distinct structural challenges for homeowners and commercial property managers. The unique microclimate along South Shore waterways produces high relative humidity levels, damp soil profiles, and elevated moisture traps near building foundations. These environmental factors combine to create ideal conditions for various invasive pest species to thrive, including carpenter ants, subterranean termites, silverfish, and field mice.
+                </p>
+
+                <p class="reveal-node">
+                    Historically, pest extermination relied upon heavy synthetic chemical broadcast mists applied around perimeter foundations. While these older chemical treatments offered temporary relief, they frequently left persistent synthetic footprints in topsoil and nearby water channels. Modern Integrated Pest Management (IPM) represents a paradigm shift toward environmental modification, physical exclusion barriers, biological controls, and targeted bio-rational essential oil micro-treatments.
+                </p>
+
+                <p class="reveal-node">
+                    When property owners encounter localized infestations, partnering with state-certified entomology technicians who understand local maritime climate shifts is crucial. Relying on trusted professionals for <a href="https://quickpestcontrolpro.com/pest-control-patchogue-ny" class="text-brand-green font-extrabold underline underline-offset-4 hover:text-brand-celestial transition-all shadow-sm">Pest Control in Patchogue, NY</a> ensures that structural assessments evaluate specific localized factors like seasonal high tides, timber moisture thresholds, and foundation construction styles typical of Long Island properties.
+                </p>
+
+                <!-- H2 SECTION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-6 border-b border-brand-green/20 pb-2 font-serif reveal-node">Seasonal Pest Dynamics & Structural Vulnerabilities</h2>
+
+                <p class="reveal-node">
+                    Insect and mammal behavior varies considerably across seasons. Understanding how ground temperatures and humidity regulate pest reproduction allows property owners to take proactive steps before minor infestations turn into major structural repairs.
+                </p>
+
+                <!-- H3 SUBSECTION -->
+                <h3 class="text-xl font-bold text-brand-green pt-2 reveal-node">Spring & Summer Vector Surge</h3>
+                <p class="reveal-node">
+                    As ground temperatures warm in early April, subterranean termite colonies initiate nuptial swarming flights to establish new nests. Simultaneously, carpenter ant colonies awaken from winter dormancy, actively tunneling into damp wooden fascia boards and deck posts. In mid-summer, standing rainwater fuels mosquito breeding cycles while ticks harbor in tall lawn perimeters.
+                </p>
+
+                <!-- H3 SUBSECTION -->
+                <h3 class="text-xl font-bold text-brand-green pt-2 reveal-node">Autumn & Winter Rodent Intrusion</h3>
+                <p class="reveal-node">
+                    When autumn night temperatures plummet, house mice and Norway rats seek warm indoor shelter with stable food supplies. A field mouse can squeeze through an opening as small as a quarter-inch. Once inside, rodents chew on electrical wiring, contaminate attic insulation, and compromise indoor air quality.
+                </p>
+
+                <div class="image-overlay-card h-64 w-full my-6 reveal-node">
+                    <img src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=1000&q=80" alt="Integrated Pest Management Strategy" class="w-full h-full object-cover">
+                    <div class="overlay-content absolute inset-0 p-6 flex items-end">
+                        <span class="text-white font-bold text-sm bg-brand-dark/90 px-3 py-1.5 rounded-lg border border-brand-green/30 backdrop-blur-md">IPM Structural Exclusion Barrier</span>
+                    </div>
+                </div>
+
+                <!-- H2 SECTION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-6 border-b border-brand-green/20 pb-2 font-serif reveal-node">Core Pillars of Integrated Pest Management (IPM)</h2>
+
+                <p class="reveal-node">
+                    Integrated Pest Management combines multi-disciplinary tactics to establish long-term pest deterrence without unnecessary reliance on harsh chemicals:
+                </p>
+
+                <ul class="list-disc pl-6 space-y-3 text-gray-300 reveal-node">
+                    <li><strong class="text-white">Detailed Property Audits:</strong> Mapping moisture gradients, utility entry penetrations, and vegetation contact points.</li>
+                    <li><strong class="text-white">Physical Exclusion Seals:</strong> Installing silicone caulking, copper mesh, door sweeps, and ridge vent covers.</li>
+                    <li><strong class="text-white">Moisture Regulation:</strong> Installing crawlspace vapor barriers and commercial dehumidifiers to starve pests of vital water.</li>
+                    <li><strong class="text-white">Botanical Treatments:</strong> Applying natural cedarwood, rosemary, and peppermint essential oil sprays that repel insects naturally.</li>
+                </ul>
+
+                <!-- H2 SECTION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-6 border-b border-brand-green/20 pb-2 font-serif reveal-node">Top 5 DIY Eco-Deterrence Maintenance Practices</h2>
+
+                <p class="reveal-node">
+                    Homeowners can take active daily steps to reduce pest attraction around their property boundary:
+                </p>
+
+                <ol class="list-decimal pl-6 space-y-3 text-gray-300 reveal-node">
+                    <li><strong>Trim Exterior Vegetation:</strong> Keep tree branches and shrubbery trimmed back at least 3 feet from exterior siding and rooflines to break pest bridges.</li>
+                    <li><strong>Elevate Exterior Firewood:</strong> Store firewood at least 20 feet away from the main foundation, raised 6 inches above soil on metal racks.</li>
+                    <li><strong>Seal Pipe Penetrations:</strong> Inspect gas line, water pipe, and cable entry points; seal open gaps with expandable foam and copper mesh.</li>
+                    <li><strong>Manage Waste Containers:</strong> Store organic waste in sealed heavy-duty containers and clean bins routinely with biodegradable soap.</li>
+                    <li><strong>Regulate Basement Moisture:</strong> Maintain indoor relative humidity below 50% using continuous dehumidifiers to discourage moisture-loving pests.</li>
+                </ol>
+
+                <!-- H2 SECTION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-6 border-b border-brand-green/20 pb-2 font-serif reveal-node">Conclusion</h2>
+
+                <p class="reveal-node">
+                    Achieving a serene, pest-free living space requires a combination of structural maintenance, moisture regulation, and eco-conscious extermination protocols. By focusing on root cause mitigation and biological repellents, property owners can safeguard their investments and maintain a peaceful home environment.
+                </p>
+
+                <!-- H2 SECTION FOR FAQ ACCORDION -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white pt-8 border-b border-brand-green/20 pb-2 font-serif reveal-node">Frequently Asked Questions (FAQ)</h2>
+
+                <div class="space-y-4 pt-4 reveal-node">
+                    
+                    <div class="glass-card rounded-2xl p-5 cursor-pointer" onclick="toggleFaq('faq-1')">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-brand-green">Are botanical treatments as effective as traditional synthetic pesticides?</h3>
+                            <i id="faq-icon-1" class="fa-solid fa-chevron-down text-brand-green transition-transform duration-300"></i>
+                        </div>
+                        <p id="faq-1" class="hidden text-gray-300 text-sm mt-3 pt-3 border-t border-brand-green/20">
+                            Yes. Modern bio-rational formulations disrupt insect neurotransmitters and chitin synthesis specifically, providing highly targeted elimination without toxic lingering chemical residues.
+                        </p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 cursor-pointer" onclick="toggleFaq('faq-2')">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-brand-green">How frequently should a property undergo eco-pest inspections?</h3>
+                            <i id="faq-icon-2" class="fa-solid fa-chevron-down text-brand-green transition-transform duration-300"></i>
+                        </div>
+                        <p id="faq-2" class="hidden text-gray-300 text-sm mt-3 pt-3 border-t border-brand-green/20">
+                            We recommend semi-annual structural audits in early Spring and late Autumn to intercept seasonal migrations proactively.
+                        </p>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 cursor-pointer" onclick="toggleFaq('faq-3')">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-brand-green">Is the treatment safe for indoor pets and young children?</h3>
+                            <i id="faq-icon-3" class="fa-solid fa-chevron-down text-brand-green transition-transform duration-300"></i>
+                        </div>
+                        <p id="faq-3" class="hidden text-gray-300 text-sm mt-3 pt-3 border-t border-brand-green/20">
+                            All Vanguard botanical products are eco-certified and non-toxic to mammals when applied according to strict safety protocols.
+                        </p>
+                    </div>
+
+                </div>
+
+            </article>
+        </section>
+
+        <!-- 4. ABOUT US PAGE SECTION -->
+        <section id="page-about" class="page-section hidden">
+            <div class="relative py-20 bg-brand-card/80 border-b border-brand-green/20 backdrop-blur-md">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl sm:text-6xl font-black text-white mb-4 font-serif">About Vanguard EcoPest</h1>
+                    <p class="text-gray-300 max-w-2xl mx-auto text-base sm:text-lg">Combining advanced entomological science with serene, environmentally conscious property protection.</p>
+                </div>
+            </div>
+
+            <div class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6 reveal-node">
+                        <div class="text-brand-green font-black text-xs uppercase tracking-widest">Our Guiding Mission</div>
+                        <h2 class="text-3xl font-extrabold text-white font-serif">Serene Protection, Zero Harmful Residuals</h2>
+                        <p class="text-gray-300 leading-relaxed">
+                            Vanguard EcoPest Systems was founded on a simple mission: delivering permanent pest containment while keeping indoor air pure and surrounding ecosystems unharmed.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed">
+                            Our state-licensed technicians receive continuous training in Integrated Pest Management, structural exclusion engineering, and bio-rational applications.
+                        </p>
+                    </div>
+                    <div class="image-overlay-card h-96 w-full shadow-2xl reveal-node tilt-card">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" alt="Certified Technicians" class="w-full h-full object-cover">
+                        <div class="overlay-content absolute inset-0 p-6 flex flex-col justify-end">
+                            <span class="text-white font-bold text-xl">Licensed Eco-Pest Technicians</span>
+                            <span class="text-brand-green text-sm">Certified IPM Specialists</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CONTACT US PAGE SECTION -->
+        <section id="page-contact" class="page-section hidden">
+            <div class="relative py-16 bg-brand-card/80 border-b border-brand-green/20 backdrop-blur-md">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl sm:text-6xl font-black text-white mb-4 font-serif">Request Service & Consultation</h1>
+                    <p class="text-gray-300 max-w-2xl mx-auto text-base">Complete our customer intake form below for immediate dispatch review.</p>
+                </div>
+            </div>
+
+            <div class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden reveal-node">
+                    
+                    <!-- SUCCESS MESSAGE STATE WITH HEAVENLY CONFETTI/PARTICLES -->
+                    <div id="contact-success-msg" class="hidden text-center py-12 space-y-6">
+                        <div class="w-20 h-20 bg-brand-green/20 border-2 border-brand-green rounded-full flex items-center justify-center mx-auto text-brand-green text-4xl animate-bounce">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-white font-serif">Service Inquiry Dispatched!</h3>
+                        <p class="text-gray-300 max-w-md mx-auto text-sm sm:text-base">
+                            Thank you for reaching out. One of our eco-pest inspection specialists will review your message and contact you within 2 hours.
+                        </p>
+                        <button onclick="resetContactForm()" class="ripple-btn px-6 py-3 bg-brand-green text-black font-extrabold rounded-xl text-sm hover:bg-brand-celestial transition-all cursor-pointer">
+                            Submit Another Request
+                        </button>
+                    </div>
+
+                    <!-- INTAKE FORM -->
+                    <form id="customer-lead-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="cust_name" class="block text-xs font-bold uppercase tracking-wider text-brand-green">Full Name *</label>
+                                <input type="text" id="cust_name" required placeholder="e.g. John Doe" class="w-full bg-brand-dark/90 border border-brand-green/30 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="cust_email" class="block text-xs font-bold uppercase tracking-wider text-brand-green">Email Address *</label>
+                                <input type="email" id="cust_email" required placeholder="john@example.com" class="w-full bg-brand-dark/90 border border-brand-green/30 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="cust_phone" class="block text-xs font-bold uppercase tracking-wider text-brand-green">Phone Number *</label>
+                                <input type="tel" id="cust_phone" required placeholder="(555) 000-0000" class="w-full bg-brand-dark/90 border border-brand-green/30 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="cust_service" class="block text-xs font-bold uppercase tracking-wider text-brand-green">Required Solution *</label>
+                                <select id="cust_service" required class="w-full bg-brand-dark/90 border border-brand-green/30 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all">
+                                    <option value="" disabled selected>Select service category</option>
+                                    <option value="Residential Eco Defense">Residential Sanctuary Shield</option>
+                                    <option value="Commercial Facility Management">Commercial Facility Matrix</option>
+                                    <option value="Termite & Subterranean Audit">Subterranean Termite Barrier</option>
+                                    <option value="Rodent Exclusion Seal">Rodent Exclusion & Sanitation</option>
+                                    <option value="Mosquito & Tick Yard Barrier">Mosquito & Tick Lawn Spray</option>
+                                    <option value="Emergency Response Dispatch">Emergency Response Dispatch</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="cust_message" class="block text-xs font-bold uppercase tracking-wider text-brand-green">Property Details & Message *</label>
+                            <textarea id="cust_message" rows="5" required placeholder="Please describe your property type, observed pests, and preferred inspection time..." class="w-full bg-brand-dark/90 border border-brand-green/30 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all"></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="ripple-btn w-full py-4 rounded-2xl bg-gradient-to-r from-brand-green via-brand-emerald to-brand-deepGreen text-black font-black text-base hover:shadow-2xl hover:shadow-brand-green/40 hover:scale-[1.01] transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Send Customer Request</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-brand-card border-t border-brand-green/20 py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-brand-green rounded-lg flex items-center justify-center text-black font-bold">
+                            <i class="fa-solid fa-shield-cat"></i>
+                        </div>
+                        <span class="text-lg font-black text-white font-serif">VANGUARD <span class="text-brand-green font-normal text-xs block">EcoPest Systems</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400">Pioneering botanical eco-pest prevention and extermination solutions.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-brand-green/20 pb-2">Navigation</h4>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-gray-400">
+                        <button onclick="navigateTo('home')" class="text-left hover:text-brand-green">Home</button>
+                        <button onclick="navigateTo('services')" class="text-left hover:text-brand-green">Services</button>
+                        <button onclick="navigateTo('blog')" class="text-left hover:text-brand-green">Blog</button>
+                        <button onclick="navigateTo('about')" class="text-left hover:text-brand-green">About Us</button>
+                        <button onclick="navigateTo('contact')" class="text-left hover:text-brand-green">Contact Us</button>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-brand-green/20 pb-2">Heavenly Assurance</h4>
+                    <p class="text-xs text-gray-400">Environmentally responsible, low-impact integrated pest management protocols.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
+                <p>&copy; <span id="current-year"></span> Vanguard EcoPest Systems. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // 1. DYNAMIC HEAVENLY CANVAS PARTICLES BACKGROUND
+        const canvas = document.getElementById('heavenly-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.radius = Math.random() * 2.2 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = -Math.random() * 0.5 - 0.2; // Gently floating upwards
+                this.alpha = Math.random() * 0.6 + 0.2;
+                this.pulseSpeed = Math.random() * 0.02 + 0.005;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha += Math.sin(Date.now() * this.pulseSpeed) * 0.005;
+
+                if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) {
+                    this.reset();
+                    this.y = canvas.height + 10;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 255, 135, ${Math.max(0, this.alpha)})`;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#00FF87';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 65; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 2. MAGNETIC SMOOTH CURSOR
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        function renderCursorRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(renderCursorRing);
+        }
+        renderCursorRing();
+
+        // 3. 3D TILT EFFECT ON CARDS
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const tiltX = (y / rect.height) * -12;
+                const tiltY = (x / rect.width) * 12;
+                card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+
+        // 4. INTERSECTION OBSERVER FOR SMOOTH REVEAL & COUNT-UP
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    
+                    // Trigger counters if inside
+                    entry.target.querySelectorAll('.counter').forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const increment = target / 60;
+                        const updateCount = () => {
+                            count += increment;
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count);
+                                requestAnimationFrame(updateCount);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal-node').forEach(node => observer.observe(node));
+
+        // 5. BUTTON RIPPLE EFFECT
+        document.querySelectorAll('.ripple-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const circle = document.createElement('span');
+                const diameter = Math.max(this.clientWidth, this.clientHeight);
+                const radius = diameter / 2;
+                const rect = this.getBoundingClientRect();
+
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${e.clientX - rect.left - radius}px`;
+                circle.style.top = `${e.clientY - rect.top - radius}px`;
+                circle.classList.add('ripple');
+
+                const ripple = this.getElementsByClassName('ripple')[0];
+                if (ripple) ripple.remove();
+
+                this.appendChild(circle);
+            });
+        });
+
+        // 6. PAGE NAVIGATION SWITCHER
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.add('hidden'));
+
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) targetPage.classList.remove('hidden');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('text-brand-green', 'bg-brand-green/10', 'border-brand-green/30');
+                link.classList.add('text-gray-300', 'border-transparent');
+            });
+
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (activeBtn) {
+                activeBtn.classList.add('text-brand-green', 'bg-brand-green/10', 'border-brand-green/30');
+                activeBtn.classList.remove('text-gray-300', 'border-transparent');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // 7. FAQ ACCORDION DROPDOWN
+        function toggleFaq(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('faq-icon-' + id.split('-')[1]);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // 8. WEB AUDIO API - HEAVENLY SYNTHESIZER
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let mainGain = null;
+        let oscillators = [];
+
+        function toggleHeavenlyAudio() {
+            if (!isAudioPlaying) {
+                startHeavenlySoundscape();
+            } else {
+                stopHeavenlySoundscape();
+            }
+        }
+
+        function startHeavenlySoundscape() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+
+                mainGain = audioCtx.createGain();
+                mainGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                mainGain.connect(audioCtx.destination);
+
+                const freqs = [220.00, 277.18, 329.63, 440.00, 554.37, 659.25];
+
+                oscillators = freqs.map((freq) => {
+                    const osc = audioCtx.createOscillator();
+                    const oscGain = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                    const lfo = audioCtx.createOscillator();
+                    lfo.frequency.setValueAtTime(0.2, audioCtx.currentTime);
+                    const lfoGain = audioCtx.createGain();
+                    lfoGain.gain.setValueAtTime(2.0, audioCtx.currentTime);
+                    lfo.connect(osc.frequency);
+                    lfo.start();
+
+                    oscGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    osc.connect(oscGain);
+                    oscGain.connect(mainGain);
+                    osc.start();
+
+                    return { osc, lfo };
+                });
+
+                isAudioPlaying = true;
+                updateAudioUI(true);
+            } catch (e) {
+                console.log("Web Audio API unavailable.");
+            }
+        }
+
+        function stopHeavenlySoundscape() {
+            if (mainGain && audioCtx) {
+                mainGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
+                setTimeout(() => {
+                    oscillators.forEach(item => {
+                        item.osc.stop();
+                        item.lfo.stop();
+                    });
+                    if (audioCtx) audioCtx.close();
+                    audioCtx = null;
+                }, 800);
+            }
+            isAudioPlaying = false;
+            updateAudioUI(false);
+        }
+
+        function updateAudioUI(playing) {
+            const statusText = document.getElementById('audio-status-text');
+            const visualizer = document.getElementById('audio-visualizer');
+            const icon = document.getElementById('audio-icon');
+
+            if (playing) {
+                statusText.textContent = "Heavenly Sound: ON";
+                visualizer.classList.remove('hidden');
+                visualizer.classList.add('flex');
+                icon.classList.add('text-brand-green');
+            } else {
+                statusText.textContent = "Heavenly Sound: OFF";
+                visualizer.classList.add('hidden');
+                visualizer.classList.remove('flex');
+            }
+        }
+
+        // 9. VOICE SPEECH READOUT
+        function playVoiceQuote(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.95;
+                utterance.pitch = 1.05;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // 10. CONTACT FORM SUBMISSION
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Processing Eco Request...</span>';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('customer-lead-form').classList.add('hidden');
+                document.getElementById('contact-success-msg').classList.remove('hidden');
+            }, 1200);
+        }
+
+        function resetContactForm() {
+            document.getElementById('customer-lead-form').reset();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>Send Customer Request</span>';
+            submitBtn.disabled = false;
+
+            document.getElementById('contact-success-msg').classList.add('hidden');
+            document.getElementById('customer-lead-form').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
